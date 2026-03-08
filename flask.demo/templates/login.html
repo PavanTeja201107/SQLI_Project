@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>SQL Injection Detection System</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#eef2f7;
+text-align:center;
+margin-top:100px;
+}
+
+.box{
+background:white;
+padding:40px;
+width:380px;
+margin:auto;
+border-radius:12px;
+box-shadow:0px 0px 15px rgba(0,0,0,0.2);
+}
+
+h2{
+color:#333;
+}
+
+input{
+width:90%;
+padding:10px;
+margin:10px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+button{
+padding:10px 20px;
+background:#007bff;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+button:hover{
+background:#0056b3;
+}
+
+.alert{
+background:#ff3b3b;
+color:white;
+padding:12px;
+margin-bottom:15px;
+border-radius:6px;
+font-weight:bold;
+}
+
+.success{
+background:#28a745;
+color:white;
+padding:12px;
+margin-bottom:15px;
+border-radius:6px;
+font-weight:bold;
+}
+
+.info{
+font-size:14px;
+color:#666;
+margin-bottom:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>SQL Injection Detection Demo</h2>
+
+<div class="info">
+This system demonstrates a hybrid SQL injection detection framework combining pattern validation, structure comparison, and parameterized queries.
+</div>
+
+{% if alert %}
+
+<div class="alert">
+🚨 SQL Injection Attack Detected
+</div>
+
+{% endif %}
+
+{% if success %}
+
+<div class="success">
+✅ Login Successful
+</div>
+
+{% endif %}
+
+<form method="POST">
+
+<input name="username" placeholder="Username">
+
+<input name="password" placeholder="Password">
+
+<button type="submit">Login</button>
+
+</form>
+
+<br>
+
+<a href="/dashboard">View Security Dashboard</a>
+
+</div>
+
+</body>
+</html>

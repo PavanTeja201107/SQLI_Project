@@ -1,0 +1,5 @@
+SELECT * FROM users WHERE username='admin' --' AND password='anything'
+SELECT * FROM users WHERE username='admin' AND password='admin123'
+SELECT * FROM users WHERE username='' AND password=''
+SELECT * FROM users WHERE username='admin' --' AND password='anything'
+SELECT * FROM users WHERE username='admin' AND password='admin123'

@@ -1,38 +1,49 @@
 import random
 import pandas as pd
 
+# Normal queries
 normal_queries = [
-"SELECT * FROM users WHERE id=1",
-"SELECT * FROM users WHERE id=5",
-"SELECT name FROM users WHERE id=10",
-"SELECT * FROM products WHERE price=100",
-"SELECT email FROM users WHERE id=3"
+    "SELECT * FROM users WHERE id=1",
+    "SELECT * FROM users WHERE username='admin'",
+    "SELECT * FROM products WHERE price=100",
+    "SELECT name FROM users WHERE id=5"
 ]
 
-injection_queries = [
-"SELECT * FROM users WHERE id=1 OR 1=1",
-"SELECT * FROM users WHERE name='admin'--",
-"SELECT * FROM users WHERE id=2 UNION SELECT password FROM users",
-"SELECT * FROM users WHERE id=1 OR 'a'='a'",
-"SELECT * FROM users WHERE id=5; DROP TABLE users"
+# SQL Injection queries
+sqli_queries = [
+    "SELECT * FROM users WHERE id=1 OR 1=1",
+    "SELECT * FROM users WHERE username='admin'--",
+    "SELECT * FROM users WHERE id=1 OR 'a'='a'",
+    "SELECT * FROM users WHERE id=2 UNION SELECT password FROM users",
+    "SELECT * FROM users WHERE id=5; DROP TABLE users"
+]
+
+# XSS queries
+xss_queries = [
+    "<script>alert(1)</script>",
+    "<img src=x onerror=alert(1)>",
+    "<iframe src='javascript:alert(1)'></iframe>",
+    "<body onload=alert(1)>",
+    "<script>document.cookie</script>"
 ]
 
 data = []
 
-for i in range(500):
+# Generate 300 each
+for i in range(300):
+    data.append([random.choice(normal_queries), 0])
 
-    q = random.choice(normal_queries)
-    data.append([q,0])
+for i in range(300):
+    data.append([random.choice(sqli_queries), 1])
 
-for i in range(500):
+for i in range(300):
+    data.append([random.choice(xss_queries), 2])
 
-    q = random.choice(injection_queries)
-    data.append([q,1])
-
+# Shuffle dataset
 random.shuffle(data)
 
-df = pd.DataFrame(data,columns=["query","label"])
+df = pd.DataFrame(data, columns=["query", "label"])
 
-df.to_csv("dataset.csv",index=False)
+df.to_csv("dataset.csv", index=False)
 
-print("Dataset created with",len(df),"queries")
+print("Dataset generated with 900 queries (Normal + SQLi + XSS)")

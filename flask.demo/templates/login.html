@@ -87,19 +87,15 @@ This system demonstrates a hybrid SQL injection detection framework combining pa
 </div>
 
 {% if alert %}
-
-<div class="alert">
-🚨 SQL Injection Attack Detected
+<div style="color:white; background:red; padding:10px; margin-bottom:10px; font-weight:bold;">
+🚨 Attack Detected (SQL Injection / XSS)
 </div>
-
 {% endif %}
 
 {% if success %}
-
-<div class="success">
+<div style="color:white; background:green; padding:10px; margin-bottom:10px; font-weight:bold;">
 ✅ Login Successful
 </div>
-
 {% endif %}
 
 <form method="POST">

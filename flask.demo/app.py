@@ -26,46 +26,51 @@ def log_attack(query):
 
 def login():
 
-    alert=False
-    success=False
+    alert = False
+    success = False
 
-    if request.method=="POST":
+    if request.method == "POST":
 
-        username=request.form["username"]
-        password=request.form["password"]
+        username = request.form["username"]
+        password = request.form["password"]
 
-        query = f"SELECT * FROM users WHERE username='{username}' AND password='{password}'"
-
-        # detect SQL injection
-        if hybrid_detect(query)==1:
-
-            log_attack(query)
-
-            alert=True
-
-            return render_template("login.html",alert=True,success=False)
-
-        # safe login
-        conn=sqlite3.connect("../database.db")
-
-        cursor=conn.cursor()
+        # ----------------------------
+        # STEP 1: SAFE LOGIN CHECK
+        # ----------------------------
+        conn = sqlite3.connect("../database.db")
+        cursor = conn.cursor()
 
         cursor.execute(
-        "SELECT * FROM users WHERE username=? AND password=?",
-        (username,password)
+            "SELECT * FROM users WHERE username=? AND password=?",
+            (username, password)
         )
 
-        result=cursor.fetchall()
-
+        result = cursor.fetchall()
         conn.close()
 
+        # ✅ VALID USER → LOGIN SUCCESS
         if result:
-            success=True
+            return render_template("login.html", alert=False, success=True)
 
-        return render_template("login.html",alert=False,success=success)
+        # ----------------------------
+        # STEP 2: ATTACK DETECTION
+        # ----------------------------
+        query = username + " " + password
 
-    return render_template("login.html",alert=False,success=False)
+        attack_type = hybrid_detect(query)
 
+        if attack_type != 0:   # 0 = SAFE
+
+            log_attack(f"{attack_type} | {query}")
+
+            return render_template("login.html", alert=True, success=False)
+
+        # ----------------------------
+        # STEP 3: NORMAL WRONG LOGIN
+        # ----------------------------
+        return render_template("login.html", alert=False, success=False)
+
+    return render_template("login.html", alert=False, success=False)
 
 @app.route("/dashboard")
 

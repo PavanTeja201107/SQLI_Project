@@ -1,18 +1,66 @@
-# Hybrid SQL Injection Detection System
+# Hybrid Web Attack Detection System (SQLi + XSS)
 
 ## Project Description
-This project demonstrates a **Hybrid SQL Injection Detection System** that detects SQL injection attacks in a web application using three algorithmic techniques:
+This project implements a **Hybrid Web Attack Detection System** capable of detecting:
 
-1. **Pattern Validation Technique (PVT)** – Detects common SQL injection patterns such as `' OR 1=1`, `--`, and `UNION SELECT`.
-2. **Structure Comparison** – Compares the expected SQL query structure with the runtime query using keyword vectors and similarity analysis.
-3. **Parameterized Query** – Prevents SQL injection by separating SQL query logic from user inputs.
+- SQL Injection (SQLi)
+- Cross-Site Scripting (XSS)
 
-A **Hybrid Model** combines these techniques to improve detection accuracy. The project also includes:
-- A vulnerable Flask login web application
-- Real-time SQL injection detection
+using multiple algorithmic techniques combined into a **hybrid model**.
+
+---
+
+## Techniques Used
+
+1. **Pattern Validation Technique (PVT)**  
+   Detects known malicious patterns such as:
+   - `' OR 1=1`
+   - `--`
+   - `UNION SELECT`
+   - script-based payloads (XSS)
+
+2. **Structure Comparison (Vector + Cosine Similarity)**  
+   Compares expected SQL query structure with runtime query using:
+   - weighted keyword vectors
+   - cosine similarity (angle-based detection)
+
+3. **Parameterized Queries**  
+   Prevents SQL injection by separating SQL logic from user input.
+
+4. **XSS Detection Module**  
+   Detects malicious script patterns such as:
+   - `<script>`
+   - `onerror=`
+   - `alert()`
+
+---
+
+## Hybrid Model
+
+The hybrid model combines all techniques:
+
+- SQL Injection → detected using PVT + Structure
+- XSS → detected using script pattern matching
+- Final classification:
+    0 → Normal
+    1 → SQL Injection
+    2 → XSS
+---
+
+---
+
+## Features
+
+- Real-time attack detection
+- Multi-class classification (Normal / SQLi / XSS)
 - Attack logging (`attack_log.txt`)
-- Security dashboard showing detected attacks
-- Experimental evaluation with a dataset of SQL queries
+- Secure login using parameterized queries
+- Flask-based web application demo
+- Security dashboard
+- Performance evaluation using:
+- Runtime
+- Confusion matrix
+- Precision / Recall / F1-score
 
 ---
 
@@ -26,7 +74,7 @@ pip install flask pandas numpy matplotlib scikit-learn
 
 python dataset_generator.py
 
-This creates `dataset.csv` containing normal and SQL injection queries.
+This creates `dataset.csv` containing normal and SQL injection and XSS queries.
 
 ### 3. Run Algorithm Evaluation
 
@@ -34,11 +82,19 @@ python experiment.py
 
 This evaluates the detection algorithms and prints runtime, confusion matrix, precision, and recall.
 
+Outputs:
+- Runtime comparison (PVT, Structure, Parameterized, Hybrid)
+- Confusion matrix
+- Classification report
+
+---
+
 ### 4. Generate Performance Graphs
 
 python graphs.py
-
-This displays graphs comparing detection rate, recall, and runtime.
+Displays:
+- Detection accuracy
+- Runtime comparison
 
 ### 5. Run the Web Application Demo
 
@@ -63,6 +119,15 @@ Result → **Login Successful**
 username: admin' --
 password: anything
 
+### XSS Attack
+
+username: <script>alert(1)</script>
+password: anything
+
+Result → 🚨 XSS Attack Detected
+
+---
+
 Result → **SQL Injection Attack Detected**
 
 Detected attacks are stored in: attack_log.txt
@@ -75,3 +140,18 @@ View detected attacks at:
 http://127.0.0.1:5000/dashboard
 
 The dashboard displays the total number of detected attacks and the logged attack queries.
+
+
+---
+
+## Conclusion
+
+This project demonstrates how combining multiple algorithmic techniques improves detection accuracy for web attacks. The hybrid approach successfully detects both SQL injection and XSS attacks while minimizing false positives.
+
+---
+
+## Future Work
+
+- Add DoS attack detection
+- Real-time monitoring dashboard
+- Machine learning-based detection

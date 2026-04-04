@@ -4,7 +4,7 @@ request_log = {}
 blocked_ips = {}
 
 TIME_WINDOW = 5
-MAX_REQUESTS = 7
+MAX_REQUESTS = 5
 
 def detect_dos(ip):
 

@@ -12,7 +12,7 @@ from parameterized_query import safe_query
 from hybrid_model import hybrid_detect
 
 # Load dataset
-data = pd.read_csv("dataset.csv")
+data = pd.read_csv("dataset.csv", on_bad_lines='skip')
 
 queries = data["query"]
 labels = data["label"]

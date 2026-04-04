@@ -3,7 +3,7 @@ import os
 import datetime
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
+from flask import redirect, url_for
 from flask import Flask, render_template, request
 import sqlite3
 
@@ -54,11 +54,12 @@ def check_dos():
 # ----------------------------------------
 # LOGIN ROUTE
 # ----------------------------------------
+
 @app.route("/", methods=["GET", "POST"])
 def login():
 
-    alert = False
-    success = False
+    alert = request.args.get("alert") == "1"
+    success = request.args.get("success") == "1"
 
     if request.method == "POST":
 
@@ -79,15 +80,13 @@ def login():
         result = cursor.fetchall()
         conn.close()
 
-        # ✅ VALID USER
         if result:
-            return render_template("login.html", alert=False, success=True)
+            return redirect(url_for("login", success=1))
 
         # ----------------------------
-        # STEP 2: SQLi + XSS DETECTION
+        # STEP 2: ATTACK DETECTION
         # ----------------------------
         query = username + " " + password
-
         attack_type = hybrid_detect(query)
 
         if attack_type != 0:
@@ -99,15 +98,14 @@ def login():
 
             log_attack(f"{attack_name} | {query}")
 
-            return render_template("login.html", alert=True, success=False)
+            return redirect(url_for("login", alert=1))
 
         # ----------------------------
         # STEP 3: NORMAL WRONG LOGIN
         # ----------------------------
-        return render_template("login.html", alert=False, success=False)
+        return redirect(url_for("login"))
 
-    return render_template("login.html", alert=False, success=False)
-
+    return render_template("login.html", alert=alert, success=success)
 
 # ----------------------------------------
 # DASHBOARD

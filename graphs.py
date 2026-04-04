@@ -1,41 +1,77 @@
 import matplotlib.pyplot as plt
+import pandas as pd
 
-methods=["PVT","Structure","Parameterized","Hybrid"]
+from pvt import detect_pvt
+from structure_detection import detect_structure
+from hybrid_model import hybrid_detect
 
-detection=[0.85,0.92,1.0,0.98]
+# ----------------------------
+# LOAD DATA
+# ----------------------------
+data = pd.read_csv("dataset.csv", on_bad_lines='skip')
 
-recall=[0.80,0.90,1.0,0.96]
+queries = data["query"]
+labels = data["label"]
 
-runtime=[0.01,0.04,0.02,0.05]
+design_query = "SELECT * FROM users WHERE id=?"
 
+# ----------------------------
+# PREDICTIONS
+# ----------------------------
+pvt_pred = []
+struct_pred = []
+hybrid_pred = []
+
+for q in queries:
+    pvt_pred.append(detect_pvt(q))
+    struct_pred.append(detect_structure(design_query, q))
+    hybrid_pred.append(hybrid_detect(q))
+
+# ----------------------------
+# ACCURACY FUNCTION
+# ----------------------------
+def calculate_accuracy(true, pred):
+    correct = 0
+    for i in range(len(true)):
+        if true[i] == pred[i]:
+            correct += 1
+    return correct / len(true)
+
+# ----------------------------
+# CALCULATE ACCURACY
+# ----------------------------
+pvt_acc = calculate_accuracy(labels, pvt_pred)
+struct_acc = calculate_accuracy(labels, struct_pred)
+hybrid_acc = calculate_accuracy(labels, hybrid_pred)
+
+# parameterized → assumed perfect prevention
+param_acc = 1.0
+
+methods = ["PVT", "Structure", "Hybrid","Parameterized"]
+scores = [pvt_acc, struct_acc, hybrid_acc, param_acc]
+
+# ----------------------------
+# PLOT 1: Detection Rate
+# ----------------------------
 plt.figure()
 
-plt.bar(methods,detection)
+bars = plt.bar(methods, scores)
 
-plt.title("Detection Rate")
+plt.title("Detection / Prevention Effectiveness Comparison")
+plt.ylabel("Accuracy")
 
-plt.ylabel("Rate")
+#  ADD % LABELS
+for bar in bars:
+    height = bar.get_height()
+    plt.text(
+        bar.get_x() + bar.get_width() / 2,
+        height + 0.02,
+        f"{height*100:.1f}%",
+        ha='center',
+        fontsize=10,
+        fontweight='bold'
+    )
 
-plt.show()
-
-
-plt.figure()
-
-plt.bar(methods,recall)
-
-plt.title("Recall Comparison")
-
-plt.ylabel("Recall")
-
-plt.show()
-
-
-plt.figure()
-
-plt.bar(methods,runtime)
-
-plt.title("Runtime Comparison")
-
-plt.ylabel("Seconds")
+plt.ylim(0, 1.1)
 
 plt.show()

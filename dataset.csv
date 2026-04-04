@@ -899,3 +899,126 @@ SELECT * FROM users WHERE id=5; DROP TABLE users,1
 SELECT * FROM users WHERE id=5; DROP TABLE users,1
 <script>alert(1)</script>,2
 <img src=x onerror=alert(1)>,2
+SELECT * FROM users WHERE username='admin123',0
+SELECT * FROM users WHERE username='selective_user',0
+SELECT * FROM users WHERE username='andrew',0
+SELECT * FROM users WHERE username='orphan_user',0
+SELECT * FROM users WHERE username='unionbank_user',0
+SELECT * FROM users WHERE username='dropzone_player',0
+SELECT * FROM users WHERE username='whereabouts_user',0
+SELECT * FROM users WHERE username='normal_input',0
+SELECT * FROM users WHERE username='safe_query_test',0
+SELECT * FROM users WHERE username='user_oriented_data',0
+SELECT * FROM users WHERE username='login_attempt',0
+SELECT * FROM users WHERE username='admin' AND password='admin123',0
+SELECT * FROM users WHERE email='user@mail.com',0
+SELECT * FROM users WHERE username='hello world',0
+SELECT * FROM users WHERE username='test_input_123',0
+SELECT * FROM users WHERE username='admin' OR 1=1,1
+SELECT * FROM users WHERE username='admin' OR '1'='1',1
+SELECT * FROM users WHERE username='' OR 'x'='x',1
+SELECT * FROM users WHERE username='admin'--',1
+SELECT * FROM users WHERE username='admin'/*',1
+SELECT * FROM users WHERE username='' OR 1=1 --,1
+SELECT * FROM users WHERE username='admin' OR true,1
+SELECT * FROM users WHERE username='admin' OR 'a'='a'--,1
+SELECT * FROM users WHERE username='admin' OR 1=1 LIMIT 1,1
+SELECT * FROM users WHERE username='admin' OR 1=1#,1
+SELECT * FROM users WHERE username='admin' OR 1=1--,1
+SELECT * FROM users WHERE username='' OR ''='',1
+SELECT * FROM users WHERE username='admin' OR '1'='1' --,1
+SELECT * FROM users WHERE username='aDmIn' Or '1'='1',1
+SELECT * FROM users WHERE username='admin' oR 1=1,1
+SELECT * FROM users WHERE username='admin'/**/OR/**/1=1,1
+SELECT * FROM users WHERE username='admin' OR 1=1#,1
+SELECT * FROM users WHERE username='admin'-- -,1
+SELECT * FROM users WHERE username='admin' OR/**/1=1,1
+SELECT * FROM users WHERE username='admin' OR 1=1;,1
+SELECT * FROM users WHERE username='admin' OR '1'='1'#,1
+SELECT * FROM users WHERE username='admin' OR 1=1/*,1
+SELECT * FROM users WHERE username='<ScRiPt>alert(1)</ScRiPt>',2
+SELECT * FROM users WHERE username='<img src=x OnErRoR=alert(1)>',2
+SELECT * FROM users WHERE username='javascript:alert(1)',2
+SELECT * FROM users WHERE username='<svg onload=alert(1)>',2
+SELECT * FROM users WHERE username='<iframe src=javascript:alert(1)>',2
+SELECT * FROM users WHERE username='<script>alert(document.cookie)</script>',2
+SELECT * FROM users WHERE username='<img src=x onerror=alert(document.domain)>',2
+SELECT * FROM users WHERE username='hello<script',0
+SELECT * FROM users WHERE username='admin--test',0
+SELECT * FROM users WHERE username='safe input or 1',0
+SELECT * FROM users WHERE username='name=admin',0
+SELECT * FROM users WHERE username='user or test',0
+SELECT * FROM users WHERE username='input and value',0
+SELECT * FROM users WHERE username='select name',0
+SELECT * FROM users WHERE username='where id=5',0
+SELECT * FROM users WHERE username='or condition test',0
+SELECT * FROM users WHERE username='and condition test',0
+SELECT * FROM users WHERE username='admin ' OR '1'='1 ',1
+SELECT * FROM users WHERE username='admin\tOR\t1=1',1
+SELECT * FROM users WHERE username='admin'||'1'='1',1
+SELECT * FROM users WHERE username='admin' OR '1' LIKE '1',1
+SELECT * FROM users WHERE username='admin' OR 1 IN (1),1
+SELECT * FROM users WHERE username='admin' OR LENGTH(username)>0,1
+SELECT * FROM users WHERE username='admin' OR TRUE,1
+SELECT * FROM users WHERE username='admin' OR 2>1,1
+SELECT * FROM users WHERE username='admin' OR NOT FALSE,1
+SELECT * FROM users WHERE username='admin' OR 'a'<'b',1
+SELECT * FROM users WHERE username='admin' OR 'abc'='abc',1
+SELECT * FROM users WHERE username='admin' OR 'abc' LIKE 'a%',1
+SELECT * FROM users WHERE username='admin' OR 1 BETWEEN 0 AND 2,1
+SELECT * FROM users WHERE username='admin' OR 5>3 AND 1=1,1
+SELECT * FROM users WHERE username='admin' AND ''='',1
+SELECT * FROM users WHERE username='admin' AND 1=1,1
+SELECT * FROM users WHERE username='admin' AND 'a'='a',1
+SELECT * FROM users WHERE username='admin' OR char(49)=char(49),1
+SELECT * FROM users WHERE username='admin' OR ascii('a')=97,1
+SELECT * FROM users WHERE username='admin%27 OR %271%27=%271',1
+SELECT * FROM users WHERE username='admin%20OR%201=1',1
+SELECT * FROM users WHERE username='admin' OR sleep(1)=0,1
+SELECT * FROM users WHERE username='admin' OR 1=1 LIMIT 1 OFFSET 0,1
+SELECT * FROM users WHERE username='admin' OR 1=1 ORDER BY 1,1
+SELECT * FROM users WHERE username='admin' OR 'x'='x' OR 'y'='y',1
+SELECT * FROM users WHERE username='admin' OR 1=1 OR 2=2,1
+SELECT * FROM users WHERE username='admin' OR '1'='1' AND 1=1,1
+SELECT * FROM users WHERE username='admin' OR 1=1 AND 2=2,1
+SELECT * FROM users WHERE username='admin' OR '1'='1' AND 'a'='a',1
+SELECT * FROM users WHERE username='admin' OR '1'='1' OR 'b'='b',1
+SELECT * FROM users WHERE username='admin' OR (1=1),1
+SELECT * FROM users WHERE username='admin' OR ((1=1)),1
+SELECT * FROM users WHERE username='admin' OR (SELECT COUNT(*) FROM users)>0,1
+SELECT * FROM users WHERE username='admin' OR username LIKE '%',1
+SELECT * FROM users WHERE username='admin' OR username!='',1
+SELECT * FROM users WHERE username='admin' OR '1'='1' /*inline*/,1
+SELECT * FROM users WHERE username='admin' OR '1'='1'--test,1
+SELECT * FROM users WHERE username='admin' OR TRUE OR FALSE,1
+SELECT * FROM users WHERE username='admin' OR 'x'='x' LIMIT 1,1
+SELECT * FROM users WHERE username='admin' OR '1'='1' UNION ALL SELECT NULL,1
+SELECT * FROM users WHERE username='admin' UNION SELECT 'hack',1
+SELECT * FROM users WHERE username='admin' OR 1=1 /*hidden*/,1
+SELECT * FROM users WHERE username='admin' OR 1=1 HAVING 1=1,1
+SELECT * FROM users WHERE username='admin' OR IF(1=1,1,0),1
+SELECT * FROM users WHERE username='admin' OR CASE WHEN 1=1 THEN 1 ELSE 0 END,1
+SELECT * FROM users WHERE username='admin' OR RAND()>0,1
+SELECT * FROM users WHERE username='admin' OR 1/1=1,1
+SELECT * FROM users WHERE username='admin' OR 5-3=2,1
+SELECT * FROM users WHERE username='admin' OR abs(-1)=1,1
+SELECT * FROM users WHERE username='admin' OR sqrt(4)=2,1
+SELECT * FROM users WHERE username='admin' OR log(1)=0,1
+SELECT * FROM users WHERE username='admin' OR pi()>3,1
+SELECT * FROM users WHERE username='admin' OR exp(0)=1,1
+SELECT * FROM users WHERE username='admin' OR sin(0)=0,1
+SELECT * FROM users WHERE username='admin' OR cos(0)=1,1
+SELECT * FROM users WHERE username='admin' OR tan(0)=0,1
+SELECT * FROM users WHERE username='admin' OR round(1.2)=1,1
+SELECT * FROM users WHERE username='admin' OR floor(1.9)=1,1
+SELECT * FROM users WHERE username='admin' OR ceil(1.1)=2,1
+SELECT * FROM users WHERE username='admin' OR char_length('a')=1,1
+SELECT * FROM users WHERE username='admin' OR upper('a')='A',1
+SELECT * FROM users WHERE username='admin' OR lower('A')='a',1
+SELECT * FROM users WHERE username='admin' OR reverse('abc')='cba',1
+SELECT * FROM users WHERE username='admin' OR replace('a','a','b')='b',1
+SELECT * FROM users WHERE username='admin' OR concat('a','b')='ab',1
+SELECT * FROM users WHERE username='admin' OR '1'='1' AND username='admin',1
+SELECT * FROM users WHERE username='admin' OR (username='admin'),1
+SELECT * FROM users WHERE username='admin' OR 1=1 AND password!='',1
+SELECT * FROM users WHERE username='admin' OR 1=1 AND email IS NOT NULL,1

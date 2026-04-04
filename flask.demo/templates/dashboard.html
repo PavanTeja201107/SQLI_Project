@@ -45,6 +45,12 @@ padding:10px;
 
 <h2>Total Attacks Detected: {{count}}</h2>
 
+<h3>Blocked IPs</h3>
+
+{% for b in blocked %}
+<p style="color:red">{{ b }}</p>
+{% endfor %}
+
 <table>
 
 <tr>

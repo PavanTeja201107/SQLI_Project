@@ -2,92 +2,107 @@
 <html>
 
 <head>
-<title>SQL Injection Demonstration</title>
+<title>Web Attack Detection Demo</title>
 
 <style>
 
-body{
-font-family:Arial;
-background:#eef2f7;
-text-align:center;
+body {
+    font-family: Arial;
+    background: #eef2f7;
+    text-align: center;
 }
 
-h2{
-margin-top:40px;
+h2 {
+    margin-top: 40px;
 }
 
-.container{
-display:flex;
-justify-content:space-around;
-align-items:center;
-margin-top:60px;
+.container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 50px;
 }
 
-.box{
-background:white;
-padding:25px;
-border-radius:10px;
-box-shadow:0px 0px 10px rgba(0,0,0,0.2);
-width:420px;
+.box {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+    width: 420px;
 }
 
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:15px;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
 }
 
-th,td{
-border:1px solid #ccc;
-padding:10px;
-font-size:14px;
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 14px;
 }
 
-th{
-background:#f2f2f2;
+th {
+    background: #f2f2f2;
 }
 
-.arrow{
-font-size:45px;
-font-weight:bold;
+.arrow {
+    font-size: 40px;
+    font-weight: bold;
 }
 
-select,button{
-padding:10px;
-margin-top:10px;
-font-size:14px;
+select, button {
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.success {
+    color: green;
+    font-weight: bold;
+}
+
+.attack {
+    color: red;
+    font-weight: bold;
+}
+
+.info {
+    color: #555;
+    font-size: 14px;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<h2>SQL Injection Demonstration</h2>
+<h2>🚀 Web Attack Detection Demo (SQLi + XSS + DoS)</h2>
 
 <div class="container">
 
-<!-- Query Box -->
+<!-- Query Selection -->
 <div class="box">
 
-<h3>Select Query</h3>
+<h3>Select Scenario</h3>
 
 <select id="query">
-
-<option value="normal">Normal Login Query</option>
-<option value="invalid">Invalid Credentials</option>
-
-<option value="attack1">SQL Injection Attack 1</option>
-<option value="attack2">SQL Injection Attack 2</option>
-<option value="attack3">SQL Injection Attack 3</option>
-
+<option value="normal">Normal Login</option>
+<option value="invalid">Invalid Login</option>
+<option value="sqli1">SQL Injection 1</option>
+<option value="sqli2">SQL Injection 2</option>
+<option value="xss1">XSS Attack 1</option>
+<option value="xss2">XSS Attack 2</option>
+<option value="dos">DoS Simulation</option>
 </select>
 
 <br>
 
-<button onclick="runQuery()">Execute Query</button>
+<button onclick="runQuery()">Run</button>
 
-<p id="queryText"></p>
+<p id="queryText" class="info"></p>
 
 </div>
 
@@ -96,58 +111,18 @@ font-size:14px;
 <!-- Database -->
 <div class="box">
 
-<h3>Database Table (Users)</h3>
+<h3>Database (Users)</h3>
 
 <table>
-
 <tr>
 <th>ID</th>
 <th>Username</th>
 <th>Password</th>
-<th>Email</th>
-<th>Role</th>
 </tr>
 
-<tr>
-<td>1</td>
-<td>admin</td>
-<td>admin123</td>
-<td>admin@mail.com</td>
-<td>Admin</td>
-</tr>
-
-<tr>
-<td>2</td>
-<td>user1</td>
-<td>1234</td>
-<td>user1@mail.com</td>
-<td>User</td>
-</tr>
-
-<tr>
-<td>3</td>
-<td>test</td>
-<td>pass</td>
-<td>test@mail.com</td>
-<td>User</td>
-</tr>
-
-<tr>
-<td>4</td>
-<td>pavan</td>
-<td>abc123</td>
-<td>pavan@mail.com</td>
-<td>User</td>
-</tr>
-
-<tr>
-<td>5</td>
-<td>guest</td>
-<td>guest</td>
-<td>guest@mail.com</td>
-<td>Guest</td>
-</tr>
-
+<tr><td>1</td><td>admin</td><td>admin123</td></tr>
+<tr><td>2</td><td>user1</td><td>1234</td></tr>
+<tr><td>3</td><td>test</td><td>pass</td></tr>
 </table>
 
 </div>
@@ -157,7 +132,7 @@ font-size:14px;
 <!-- Output -->
 <div class="box">
 
-<h3>Query Output</h3>
+<h3>System Output</h3>
 
 <div id="result"></div>
 
@@ -169,99 +144,49 @@ font-size:14px;
 
 function runQuery(){
 
-let queryType=document.getElementById("query").value
-let result=document.getElementById("result")
-let queryText=document.getElementById("queryText")
+let type = document.getElementById("query").value;
+let result = document.getElementById("result");
+let queryText = document.getElementById("queryText");
 
-if(queryType=="normal"){
-
-queryText.innerHTML="SELECT * FROM users WHERE username='admin' AND password='admin123'"
-
-result.innerHTML=`
-<table>
-<tr>
-<th>ID</th><th>Username</th><th>Password</th><th>Email</th><th>Role</th>
-</tr>
-<tr>
-<td>1</td><td>admin</td><td>admin123</td><td>admin@mail.com</td><td>Admin</td>
-</tr>
-</table>
-<p style="color:green;font-weight:bold;">Login Successful</p>
-`
-
+// NORMAL
+if(type === "normal"){
+queryText.textContent = "SELECT * FROM users WHERE username='admin' AND password='admin123'";
+result.innerHTML = "<p class='success'>✅ Login Successful</p>";
 }
 
-else if(queryType=="invalid"){
-
-queryText.innerHTML="SELECT * FROM users WHERE username='admin' AND password='wrongpass'"
-
-result.innerHTML="<p style='color:orange;font-weight:bold;'>No Matching Records Found</p>"
-
+// INVALID
+else if(type === "invalid"){
+queryText.textContent = "SELECT * FROM users WHERE username='admin' AND password='wrong'";
+result.innerHTML = "<p class='info'>No matching records</p>";
 }
 
-else if(queryType=="attack1"){
-
-queryText.innerHTML="SELECT * FROM users WHERE username='' OR '1'='1'"
-
-result.innerHTML=showAllUsers()
-
+// SQLi
+else if(type === "sqli1"){
+queryText.textContent = "SELECT * FROM users WHERE username='' OR '1'='1'";
+result.innerHTML = "<p class='attack'>🚨 SQL Injection Detected</p>";
 }
 
-else if(queryType=="attack2"){
-
-queryText.innerHTML="SELECT username,password FROM users WHERE '1'='1'"
-
-result.innerHTML=`
-<table>
-<tr>
-<th>Username</th><th>Password</th>
-</tr>
-<tr><td>admin</td><td>admin123</td></tr>
-<tr><td>user1</td><td>1234</td></tr>
-<tr><td>test</td><td>pass</td></tr>
-<tr><td>pavan</td><td>abc123</td></tr>
-<tr><td>guest</td><td>guest</td></tr>
-</table>
-<p style="color:red;font-weight:bold;">SQL Injection — Credentials Extracted</p>
-`
+else if(type === "sqli2"){
+queryText.textContent = "SELECT * FROM users WHERE username='admin'--";
+result.innerHTML = "<p class='attack'>🚨 SQL Injection Detected</p>";
 }
 
-else if(queryType=="attack3"){
-
-queryText.innerHTML="SELECT username,email FROM users WHERE '1'='1'"
-
-result.innerHTML=`
-<table>
-<tr>
-<th>Username</th><th>Email</th>
-</tr>
-<tr><td>admin</td><td>admin@mail.com</td></tr>
-<tr><td>user1</td><td>user1@mail.com</td></tr>
-<tr><td>test</td><td>test@mail.com</td></tr>
-<tr><td>pavan</td><td>pavan@mail.com</td></tr>
-<tr><td>guest</td><td>guest@mail.com</td></tr>
-</table>
-<p style="color:red;font-weight:bold;">SQL Injection — Email Data Extracted</p>
-`
+// XSS (safe display)
+else if(type === "xss1"){
+queryText.textContent = "&lt;script&gt;alert(1)&lt;/script&gt;";
+result.innerHTML = "<p class='attack'>🚨 XSS Attack Detected</p>";
 }
 
+else if(type === "xss2"){
+queryText.textContent = "&lt;img src=x onerror=alert(1)&gt;";
+result.innerHTML = "<p class='attack'>🚨 XSS Attack Detected</p>";
 }
 
-function showAllUsers(){
-
-return `
-<table>
-<tr>
-<th>ID</th><th>Username</th><th>Password</th><th>Email</th><th>Role</th>
-</tr>
-<tr><td>1</td><td>admin</td><td>admin123</td><td>admin@mail.com</td><td>Admin</td></tr>
-<tr><td>2</td><td>user1</td><td>1234</td><td>user1@mail.com</td><td>User</td></tr>
-<tr><td>3</td><td>test</td><td>pass</td><td>test@mail.com</td><td>User</td></tr>
-<tr><td>4</td><td>pavan</td><td>abc123</td><td>pavan@mail.com</td><td>User</td></tr>
-<tr><td>5</td><td>guest</td><td>guest</td><td>guest@mail.com</td><td>Guest</td></tr>
-</table>
-<p style="color:red;font-weight:bold;">SQL Injection Successful — All Records Returned</p>
-`
+// DoS
+else if(type === "dos"){
+queryText.textContent = "Multiple rapid requests from same IP";
+result.innerHTML = "<p class='attack'>🚨 DoS Attack Detected</p>";
+}
 
 }
 

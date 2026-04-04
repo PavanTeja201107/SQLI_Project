@@ -34,9 +34,11 @@ def log_blocked_ip(ip, count):
 # ----------------------------------------
 @app.before_request
 def check_dos():
+
+    # ✅ ONLY apply DoS to login route
     if request.path != "/":
         return
-    
+
     ip = request.headers.get("X-Forwarded-For", request.remote_addr)
 
     status, count = detect_dos(ip)
@@ -48,7 +50,6 @@ def check_dos():
 
     elif status == 2:
         return render_template("login.html", alert=True, success=False)
-
 
 # ----------------------------------------
 # LOGIN ROUTE
